@@ -2,24 +2,31 @@ const CODS={A:65, Z:90} // приводим буква к числовому з�
 
 
 // eslint-disable-next-line no-unused-vars
-function createCell() {
+function createCell(_, index) { // добавляем индекс для изменения размера(событие onmousemove)
     return `
-     <div class="cel" contenteditable=""></div>
+     <div class="cel" contenteditable="" data-type="resizable-cell" data-cell="${index}"></div> 
     `
 }
 
 // eslint-disable-next-line no-unused-vars
-function createCol(el) {  // создаем колонки
+function createCol(el, index) {  // создаем колонки  //col-resize изменение размера колонок // добавляем индекс для изменения размера(событие onmousemove)// data-resize="col" устанавливаем название для функционала, для JS
     return `
-    <div class="col">${el}</div>
+    <div class="column"  data-type="resizable" data-col="${index}">
+      ${el}
+      <div class="col-resize" data-resize="col"></div> 
+     </div>
     `
 }
 
 function createRow(content, num='') { // создаем строку
+  const resize= num!==''?'<div class="row-resize" data-resize="row"></div>':''  // убираем курсор из первой строки
    return `
- <div class="row">
-   <div class="row-info">${num}</div>
-   <div class="row-data">${content}</div>
+ <div class="row" data-type="resizable">
+   <div class="row-info" >
+       ${num}
+       ${resize}
+   </div>  
+   <div class="row-data" data-row="row-da">${content}</div>
  </div>  
    `
 }

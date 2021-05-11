@@ -41,6 +41,31 @@ export class Dom {
       // this.$el.removeEventListener(eventType, this.$$listener[eventType] ) // при реализации в DomListener теряем контекст и при удалении получаем другой callBack, поэтому здесь сохраняем его}
       this.$el.removeEventListener(eventType, callBack)
   }
+
+  closest(selector) { // возвращает элемент(родитель) по значению
+        return $(this.$el.closest(selector)) // помещаем в конструктор чтобы инстанс DOM
+  }
+
+  getCords() { // получаем кординаты элемента
+        return this.$el.getBoundingClientRect()
+  }
+
+  get data() {  // поиск div по dataset
+     return this.$el.dataset
+  }
+
+     findAll(selector) {
+        return this.$el.querySelectorAll(selector)
+  }
+
+  css(styles={}) {
+      /* for (const key in styles) {
+          if (styles.hasOwnProperty(key)) {  // проверка ,чтобы не шел по прототипу ,т.к. forin идет и по прототипу
+              this.$el.style[key] = styles[key]
+          }
+      }*/
+      Object.keys(styles).forEach(key => this.$el.style[key]=styles[key]) // лучше через Object.keys без проверки hasOwnProperty
+  }
 }
 
 
