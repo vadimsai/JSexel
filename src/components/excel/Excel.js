@@ -1,14 +1,19 @@
 import {$} from '@core/dom';
+import {Emmiter} from '@core/Emmiter';
 
 export class Excel {
     constructor(selector, options) {  // new Excel('#app', {component: [Headers, Toolbar, Formula, Table]
         this.$el= $(selector) // делаем елемент instance Dom класса, чтобы append возвращал //this.$el=document.querySelector(selector)
-        this.components=options.components || [] // внимательней с параметрами, ошибки в названии
+        this.components=options.components || [] // [Headers, Toolbar, Formula, Table]
+        this.emmiter=new Emmiter()
     }
 
     getRoot() {
         const $root=$.create('div', 'excel') // создаем корневой елемент(реализация метода в dom.js)
 
+        const componentOptions={ // Emmit параметры для конструктора компонентов(Headers, Toolbar, Formula, Table)
+            emmiter: this.emmiter
+        }
        /*  const $root=document.createElement('div') // создаем корневой елемент
         $root.classList.add('excel')  // добавили класс т.к. он в корне всех остальных классов в Html*/
         /* $root.textContent='Test'
@@ -18,7 +23,7 @@ export class Excel {
             /* const $el=document.createElement('div') // добавляем елемент для каждого, класса
             $el.classList.add(Compon.className) // добавляем нязвание класса(static  className) из html*/
             const $el=$.create('div', Compon.className) // создаем тег с классом для каждого элемента массива  ($- создает объект Dom)
-            const component=new Compon($el) // создаем у каждого элемента массива(Headers, ...) new Component(т.к. элементы массива - классы)
+            const component=new Compon($el, componentOptions) // создаем у каждого элемента массива(Headers, ...) new Component(т.к. элементы массива - классы)
 
              //    // Дебаг для removeDomListeners
              // if (component.name) {
@@ -40,5 +45,9 @@ export class Excel {
         this.$el.append(this.getRoot())  // создаем Html элемент в методе getRoot
 
         this.components.forEach(compon => compon.init()) // прослушываем события для каждого компонента, после append
+    }
+
+    destroy() {
+        this.components.forEach(compon => compon.destroy())
     }
 }

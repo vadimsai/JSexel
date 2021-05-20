@@ -8,6 +8,7 @@ export function resizeHandler($root, event) { // СУЩЕСТВЕННАЯ ОПТ
     const sideProp= type === 'col' ? 'bottom' : 'right'  // если колнки то right, чтобы не писать if
     let value
 
+
     $resizer.css({
         opacity: 1,  // для Hover
         [sideProp]: '-5000px', // по условию 'bottom' или 'right' вся длинна курсора для колонок или строк
@@ -29,7 +30,7 @@ export function resizeHandler($root, event) { // СУЩЕСТВЕННАЯ ОПТ
         document.onmouseup = null
         if (type === 'col') {
             $parent.css({width: value + 'px'}) // записываем новую width в div который меняем
-                $root.findAll(`[data-cell="${$parent.data.col}"]`)
+                $root.findAll(`[data-col="${$parent.data.col}"]`)
                 .forEach(e => e.style.width = value + 'px')
         } else {
             $parent.css({height: value + 'px'})  // записываем новую height в div который меняем
