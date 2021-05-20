@@ -66,6 +66,44 @@ export class Dom {
       }*/
       Object.keys(styles).forEach(key => this.$el.style[key]=styles[key]) // лучше через Object.keys без проверки hasOwnProperty
   }
+
+  find(selector) { // ищем элемент
+        return $(this.$el.querySelector(selector))
+  }
+
+  addClass(className) { // добавляем имя классу
+       this.$el.classList.add(className)
+  }
+  removeClass(className) { // удаляем имя классу
+      this.$el.classList.remove(className)
+  }
+
+  cell(parse) {  // разбиваем полученный значения на строки и колонки
+        if (parse) {
+            const parsed=this.cell().split(':') // рекурсия
+            return {
+                row: +parsed[0], // + приводим к int
+                col: +parsed[1]
+            }
+        }
+     return this.data.cell
+  }
+
+  focus() { // фокус с элементом(курсор)
+        this.$el.focus()
+      return this
+  }
+
+  text(text) {
+        if (typeof  text==='string') {
+            this.$el.textContent=text
+            return this
+        }
+        if (this.$el.tagName.toLowerCase()==='input') {
+            return this.$el.value.trim()
+        }
+        return this.$el.textContent.trim()
+  }
 }
 
 

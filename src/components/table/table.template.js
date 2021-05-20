@@ -1,11 +1,18 @@
 const CODS={A:65, Z:90} // приводим буква к числовому значению
 
 
-// eslint-disable-next-line no-unused-vars
-function createCell(_, index) { // добавляем индекс для изменения размера(событие onmousemove)
-    return `
-     <div class="cel" contenteditable="" data-type="resizable-cell" data-cell="${index}"></div> 
-    `
+// function createCell(i, col) { // добавляем индекс для изменения размера(событие onmousemove)
+//     return `
+//      <div class="cel " contenteditable="" data-row="${i}" data-cell="${col}"></div>
+//     `
+// }
+
+function createCell(i) { // i-  строки  // index(колонки)
+    return function(_, index) {
+        return `
+        <div class="cel " contenteditable="" data-type="cell" data-col="${index}" data-cell="${i}:${index}"></div>
+        `
+    }
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -57,14 +64,15 @@ export  function createTable(rowsCount = 21) {
         .map(createCol) // т.к. передаем один параметр УПРОЩАЕМ
         .join('')
 
-    const cell= new Array(colsCount)
-        .fill('').map(createCell).join('')
-
-    rows.push(createRow(cols))  // создаем ПЕРВУЮ строку и в нее кладем сформированные колонки
+    rows.push(createRow( cols))  // создаем ПЕРВУЮ строку и в нее кладем сформированные колонки
 
     for (let i = 0; i < rowsCount; i++) {
-         rows.push(createRow(cell, i+1))
+        const cell= new Array(colsCount)
+            .fill('')
+            // .map((_, col)=>createCell(i, col))
+            .map(createCell(i))
+            .join('')
+         rows.push(createRow(cell, i+1  ))
     }
-    console.log(cols);
     return rows.join('')
 }
